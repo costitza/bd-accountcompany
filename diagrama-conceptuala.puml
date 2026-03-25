@@ -1,9 +1,20 @@
 @startuml conceptuala
-!theme plain
-skinparam linetype ortho
-skinparam nodesep 50
-skinparam ranksep 50
 
+!theme plain
+hide circle
+hide empty members
+skinparam linetype ortho
+skinparam nodesep 120
+skinparam ranksep 120
+
+' Matching ER styling
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+' Entity Definitions (Conceptual)
 entity "DEPARTAMENTE" as dep
 entity "ANGAJATI (Contabili)" as ang
 entity "FORME_JURIDICE" as form
@@ -17,21 +28,21 @@ entity "PLATI" as plati
 entity "TIPURI_DECLARATII" as tip_decl
 entity "DECLARATII_FISCALE" as decl
 
-' Relații Conceptuale
-dep "1" -- "N" ang : "organizează >"
-form "1" -- "N" cli : "definește >"
-cli "1" -- "N" doc : "predă >"
-cli "1" -- "N" ctr : "încheie >"
-ang "1" -- "N" ctr : "gestionează >"
+' Relatii Conceptuale
+dep "1" -- "N" ang : "organizeaza >"
+form "1" -- "N" cli : "defineste >"
+cli "1" -- "N" doc : "preda >"
+cli "1" -- "N" ctr : "incheie >"
+ang "1" -- "N" ctr : "gestioneaza >"
 
 ctr "1" -- "N" det : "include >"
-serv "1" -- "N" det : "este inclus în >"
+serv "1" -- "N" det : "este inclus in >"
 
-ctr "1" -- "N" fact : "generează >"
-fact "1" -- "N" plati : "este achitată prin >"
+ctr "1" -- "N" fact : "genereaza >"
+fact "1" -- "N" plati : "este achitata prin >"
 
-cli "1" -- "N" decl : "vizează >"
+cli "1" -- "N" decl : "vizeaza >"
 ang "1" -- "N" decl : "depune >"
-tip_decl "1" -- "N" decl : "clasifică >"
+tip_decl "1" -- "N" decl : "clasifica >"
 
 @enduml
