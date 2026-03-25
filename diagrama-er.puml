@@ -14,12 +14,15 @@ entity "DEPARTAMENTE" as DEPARTAMENTE {
   * id_departament : NUMBER <<PK>>
   --
   * denumire_dept : VARCHAR2(50)
+  * cod_dept : VARCHAR2(10) <<UQ>>
+    descriere : VARCHAR2(200)
 }
 
 entity "FORME_JURIDICE" as FORME_JURIDICE {
   * id_forma : NUMBER <<PK>>
   --
   * cod_forma : VARCHAR2(10) <<UQ>>
+  * denumire_completa : VARCHAR2(100)
 }
 
 entity "SERVICII" as SERVICII {
@@ -27,6 +30,7 @@ entity "SERVICII" as SERVICII {
   --
   * denumire_serviciu : VARCHAR2(100)
   * tarif_standard : NUMBER
+    categorie : VARCHAR2(50)
 }
 
 entity "TIPURI_DECLARATII" as TIPURI_DECLARATII {
@@ -35,6 +39,7 @@ entity "TIPURI_DECLARATII" as TIPURI_DECLARATII {
   * cod_declaratie : VARCHAR2(10) <<UQ>>
   * denumire : VARCHAR2(100)
     frecventa_depunere : VARCHAR2(20)
+    termen_limita_zile : NUMBER
 }
 
 entity "ANGAJATI" as ANGAJATI {
@@ -43,7 +48,11 @@ entity "ANGAJATI" as ANGAJATI {
   * id_departament : NUMBER <<FK>>
   * nume : VARCHAR2(50)
   * prenume : VARCHAR2(50)
-  * functie : VARCHAR2(50)
+  * cnp : VARCHAR2(13) <<UQ>>
+  * email : VARCHAR2(100) <<UQ>>
+    telefon : VARCHAR2(20)
+    data_angajarii : DATE
+    functie : VARCHAR2(50)
     salariu : NUMBER
 }
 
@@ -53,7 +62,10 @@ entity "CLIENTI" as CLIENTI {
   * id_forma : NUMBER <<FK>>
   * nume_companie : VARCHAR2(100)
   * cui : VARCHAR2(20) <<UQ>>
-    email : VARCHAR2(50) <<UQ>>
+    adresa_sediu : VARCHAR2(200)
+    reprezentant_legal : VARCHAR2(100)
+    telefon : VARCHAR2(20)
+    email_contact : VARCHAR2(50) <<UQ>>
 }
 
 entity "DOCUMENTE_LEGALE" as DOCUMENTE_LEGALE {
@@ -63,6 +75,8 @@ entity "DOCUMENTE_LEGALE" as DOCUMENTE_LEGALE {
   * tip_document : VARCHAR2(50)
   * serie_numar : VARCHAR2(50)
     data_emiterii : DATE
+    data_expirare : DATE
+    status_validare : VARCHAR2(20)
     copie_digitala : VARCHAR2(255)
 }
 
@@ -73,6 +87,8 @@ entity "CONTRACTE" as CONTRACTE {
   * id_angajat : NUMBER <<FK>>
     data_semnare : DATE
     data_expirare : DATE
+    valoare_totala : NUMBER
+    moneda : VARCHAR2(3)
     status_contract : VARCHAR2(15)
 }
 
@@ -81,6 +97,7 @@ entity "DETALII_CONTRACT" as DETALII_CONTRACT {
   * id_serviciu : NUMBER <<PK, FK>>
   --
   * tarif_negociat : NUMBER
+    observatii : VARCHAR2(200)
 }
 
 entity "FACTURI" as FACTURI {
@@ -89,7 +106,9 @@ entity "FACTURI" as FACTURI {
   * id_contract : NUMBER <<FK>>
   * numar_factura : NUMBER
     data_emitere : DATE
+    data_scadenta : DATE
   * suma_totala : NUMBER
+    cota_tva : NUMBER
     status_plata : VARCHAR2(15)
 }
 
@@ -100,6 +119,8 @@ entity "PLATI" as PLATI {
   * suma_platita : NUMBER
     data_plata : DATE
     metoda_plata : VARCHAR2(20)
+    cont_iban_sursa : VARCHAR2(34)
+    referinta_tranzactie : VARCHAR2(100)
 }
 
 entity "DECLARATII_FISCALE" as DECLARATII_FISCALE {
@@ -110,6 +131,8 @@ entity "DECLARATII_FISCALE" as DECLARATII_FISCALE {
   * id_angajat : NUMBER <<FK>>
   * luna_an_raportare : VARCHAR2(20)
     data_depunere : DATE
+    suma_datorata : NUMBER
+    metoda_depunere : VARCHAR2(20)
     numar_recipisa_anaf : VARCHAR2(50) <<UQ>>
     stare_recipisa : VARCHAR2(20)
 }
