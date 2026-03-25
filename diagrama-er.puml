@@ -1,0 +1,131 @@
+@startuml erd
+!theme plain
+hide circle
+skinparam linetype ortho
+
+' Definirea stilului pentru PK si FK
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+entity "DEPARTAMENTE" as DEPARTAMENTE {
+  * id_departament : NUMBER <<PK>>
+  --
+  * denumire_dept : VARCHAR2(50)
+}
+
+entity "FORME_JURIDICE" as FORME_JURIDICE {
+  * id_forma : NUMBER <<PK>>
+  --
+  * cod_forma : VARCHAR2(10) <<UQ>>
+}
+
+entity "SERVICII" as SERVICII {
+  * id_serviciu : NUMBER <<PK>>
+  --
+  * denumire_serviciu : VARCHAR2(100)
+  * tarif_standard : NUMBER
+}
+
+entity "TIPURI_DECLARATII" as TIPURI_DECLARATII {
+  * id_tip_declaratie : NUMBER <<PK>>
+  --
+  * cod_declaratie : VARCHAR2(10) <<UQ>>
+  * denumire : VARCHAR2(100)
+    frecventa_depunere : VARCHAR2(20)
+}
+
+entity "ANGAJATI" as ANGAJATI {
+  * id_angajat : NUMBER <<PK>>
+  --
+  * id_departament : NUMBER <<FK>>
+  * nume : VARCHAR2(50)
+  * prenume : VARCHAR2(50)
+  * functie : VARCHAR2(50)
+    salariu : NUMBER
+}
+
+entity "CLIENTI" as CLIENTI {
+  * id_client : NUMBER <<PK>>
+  --
+  * id_forma : NUMBER <<FK>>
+  * nume_companie : VARCHAR2(100)
+  * cui : VARCHAR2(20) <<UQ>>
+    email : VARCHAR2(50) <<UQ>>
+}
+
+entity "DOCUMENTE_LEGALE" as DOCUMENTE_LEGALE {
+  * id_document : NUMBER <<PK>>
+  --
+  * id_client : NUMBER <<FK>>
+  * tip_document : VARCHAR2(50)
+  * serie_numar : VARCHAR2(50)
+    data_emiterii : DATE
+    copie_digitala : VARCHAR2(255)
+}
+
+entity "CONTRACTE" as CONTRACTE {
+  * id_contract : NUMBER <<PK>>
+  --
+  * id_client : NUMBER <<FK>>
+  * id_angajat : NUMBER <<FK>>
+    data_semnare : DATE
+    data_expirare : DATE
+    status_contract : VARCHAR2(15)
+}
+
+entity "DETALII_CONTRACT" as DETALII_CONTRACT {
+  * id_contract : NUMBER <<PK, FK>>
+  * id_serviciu : NUMBER <<PK, FK>>
+  --
+  * tarif_negociat : NUMBER
+}
+
+entity "FACTURI" as FACTURI {
+  * id_factura : NUMBER <<PK>>
+  --
+  * id_contract : NUMBER <<FK>>
+  * numar_factura : NUMBER
+    data_emitere : DATE
+  * suma_totala : NUMBER
+    status_plata : VARCHAR2(15)
+}
+
+entity "PLATI" as PLATI {
+  * id_plata : NUMBER <<PK>>
+  --
+  * id_factura : NUMBER <<FK>>
+  * suma_platita : NUMBER
+    data_plata : DATE
+    metoda_plata : VARCHAR2(20)
+}
+
+entity "DECLARATII_FISCALE" as DECLARATII_FISCALE {
+  * id_declaratie : NUMBER <<PK>>
+  --
+  * id_client : NUMBER <<FK>>
+  * id_tip_declaratie : NUMBER <<FK>>
+  * id_angajat : NUMBER <<FK>>
+  * luna_an_raportare : VARCHAR2(20)
+    data_depunere : DATE
+    numar_recipisa_anaf : VARCHAR2(50) <<UQ>>
+    stare_recipisa : VARCHAR2(20)
+}
+
+' Relatiile logice
+DEPARTAMENTE ||--o{ ANGAJATI
+FORME_JURIDICE ||--o{ CLIENTI
+CLIENTI ||--o{ DOCUMENTE_LEGALE
+CLIENTI ||--o{ CONTRACTE
+ANGAJATI ||--o{ CONTRACTE
+CONTRACTE ||--o{ DETALII_CONTRACT
+SERVICII ||--o{ DETALII_CONTRACT
+CONTRACTE ||--o{ FACTURI
+FACTURI ||--o{ PLATI
+CLIENTI ||--o{ DECLARATII_FISCALE
+TIPURI_DECLARATII ||--o{ DECLARATII_FISCALE
+ANGAJATI ||--o{ DECLARATII_FISCALE
+
+@enduml

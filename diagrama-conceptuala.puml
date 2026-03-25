@@ -1,0 +1,37 @@
+@startuml conceptuala
+!theme plain
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 50
+
+entity "DEPARTAMENTE" as dep
+entity "ANGAJATI (Contabili)" as ang
+entity "FORME_JURIDICE" as form
+entity "CLIENTI" as cli
+entity "DOCUMENTE_LEGALE" as doc
+entity "CONTRACTE" as ctr
+entity "SERVICII" as serv
+entity "DETALII_CONTRACT" as det
+entity "FACTURI" as fact
+entity "PLATI" as plati
+entity "TIPURI_DECLARATII" as tip_decl
+entity "DECLARATII_FISCALE" as decl
+
+' Relații Conceptuale
+dep "1" -- "N" ang : "organizează >"
+form "1" -- "N" cli : "definește >"
+cli "1" -- "N" doc : "predă >"
+cli "1" -- "N" ctr : "încheie >"
+ang "1" -- "N" ctr : "gestionează >"
+
+ctr "1" -- "N" det : "include >"
+serv "1" -- "N" det : "este inclus în >"
+
+ctr "1" -- "N" fact : "generează >"
+fact "1" -- "N" plati : "este achitată prin >"
+
+cli "1" -- "N" decl : "vizează >"
+ang "1" -- "N" decl : "depune >"
+tip_decl "1" -- "N" decl : "clasifică >"
+
+@enduml
