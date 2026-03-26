@@ -1,0 +1,62 @@
+@startuml
+
+
+
+
+hide circle
+hide empty members
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 100
+skinparam defaultFontSize 20
+skinparam padding 8
+
+
+' Entity Definitions (Conceptual)
+entity "DEPARTAMENTE" as dep
+entity "FORME_JURIDICE" as form
+entity "SERVICII" as serv
+entity "TIPURI_DECLARATII" as tip_decl
+entity "ANGAJATI" as ang
+entity "CLIENTI (Superclasă)" as cli
+entity "DOCUMENTE_LEGALE" as doc
+entity "CONTRACTE" as ctr
+entity "DETALII_CONTRACT" as det
+entity "FACTURI" as fact
+entity "PLATI" as plati
+entity "DECLARATII_FISCALE" as decl
+entity "PUNCTE_LUCRU" as pct
+entity "PERSOANE_JURIDICE (Subclasă)" as pj
+entity "PERSOANE_FIZICE (Subclasă)" as pf
+entity "VECTOR_FISCAL" as vector
+
+' Relații ISA (Moștenirea rămâne standard, fără cardinalitate deoarece e o regulă de superclasă)
+cli <|-- pj : "ISA"
+cli <|-- pf : "ISA"
+
+' Relații Conceptuale cu cardinalitate explicită ()
+dep "1(1)" -- "M(1)" ang : "organizează"
+form "1(1)" -- "M(1)" cli : "definește"
+
+' Ecosistemul Clientului
+cli "1(1)" -- "M(0)" doc : "predă"
+cli "1(1)" -- "1(1)" vector : "este încadrat fiscal prin"
+cli "1(1)" -- "M(0)" pct : "operează prin"
+
+' Contracte și Servicii
+cli "1(1)" -- "M(0)" ctr : "încheie"
+ang "1(1)" -- "M(0)" ctr : "gestionează"
+ctr "1(1)" -- "M(1)" det : "include"
+serv "1(1)" -- "M(0)" det : "este inclus în"
+
+' Facturare și Plăți
+ctr "1(1)" -- "M(0)" fact : "generează"
+fact "1(1)" -- "M(0)" plati : "este achitată prin"
+
+' Declarații Fiscale
+cli "1(1)" -- "M(0)" decl : "vizează"
+ang "1(1)" -- "M(0)" decl : "depune"
+tip_decl "1(1)" -- "M(0)" decl : "clasifică"
+
+@enduml
+

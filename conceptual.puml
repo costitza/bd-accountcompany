@@ -137,18 +137,62 @@ entity "DECLARATII_FISCALE" as DECLARATII_FISCALE {
     stare_recipisa : VARCHAR2(20)
 }
 
-' Relatiile logice conform stilului image.png
-DEPARTAMENTE "1(1)" -- "M(1)" ANGAJATI
-FORME_JURIDICE "1(1)" -- "M(1)" CLIENTI
-CLIENTI "1(1)" -- "M(0)" DOCUMENTE_LEGALE
-CLIENTI "1(1)" -- "M(0)" CONTRACTE
-ANGAJATI "1(1)" -- "M(0)" CONTRACTE
-CONTRACTE "1(1)" -- "M(1)" DETALII_CONTRACT
-SERVICII "1(1)" -- "M(0)" DETALII_CONTRACT
-CONTRACTE "1(1)" -- "M(0)" FACTURI
-FACTURI "1(1)" -- "M(0)" PLATI
-CLIENTI "1(1)" -- "M(0)" DECLARATII_FISCALE
-TIPURI_DECLARATII "1(1)" -- "M(0)" DECLARATII_FISCALE
-ANGAJATI "1(1)" -- "M(0)" DECLARATII_FISCALE
+entity "PUNCTE_LUCRU" as PUNCTE_LUCRU {
+  * id_punct_lucru : NUMBER <<PK>>
+  --
+  * id_client : NUMBER <<FK>>
+  * adresa : VARCHAR2(255)
+    are_casa_marcat : VARCHAR2(2)
+}
+
+
+entity "PERSOANE_JURIDICE" as PERSOANE_JURIDICE {
+  * id_client : NUMBER <<PK, FK>>
+  --
+  * cui : VARCHAR2(20) <<UQ>>
+    reg_comert : VARCHAR2(20)
+    capital_social : NUMBER
+}
+
+entity "PERSOANE_FIZICE" as PERSOANE_FIZICE {
+  * id_client : NUMBER <<PK, FK>>
+  --
+  * cnp : VARCHAR2(13) <<UQ>>
+    ci_serie : VARCHAR2(2)
+    ci_numar : VARCHAR2(10)
+}
+
+entity "VECTOR_FISCAL" as VECTOR_FISCAL {
+  * id_vector : NUMBER <<PK>>
+  --
+  * id_client : NUMBER <<FK>> <<UQ>>
+  * platitor_tva : VARCHAR2(2) <<CHK: DA/NU>>
+  * tip_impozit : VARCHAR2(50)
+}
+
+' Relatiile logice folosind notatia standard PlantUML (Crow's Foot)
+
+DEPARTAMENTE ||--|{ ANGAJATI
+FORME_JURIDICE ||--|{ CLIENTI
+CLIENTI ||--o{ DOCUMENTE_LEGALE
+CLIENTI ||--o{ CONTRACTE
+ANGAJATI ||--o{ CONTRACTE
+CONTRACTE ||--|{ DETALII_CONTRACT
+SERVICII ||--o{ DETALII_CONTRACT
+CONTRACTE ||--o{ FACTURI
+FACTURI ||--o{ PLATI
+CLIENTI ||--o{ DECLARATII_FISCALE
+TIPURI_DECLARATII ||--o{ DECLARATII_FISCALE
+ANGAJATI ||--o{ DECLARATII_FISCALE
+
+' Relații ISA (Moștenire)
+CLIENTI ||--|| PERSOANE_JURIDICE : "ISA"
+CLIENTI ||--|| PERSOANE_FIZICE : "ISA"
+
+' Simbolul ||--o| înseamnă 1 la 0 sau 1 (Relație 1:1)
+CLIENTI ||--o| VECTOR_FISCAL
+
+' Simbolul ||--o{ înseamnă 1 la Mai Multe (Relație 1:N)
+CLIENTI ||--o{ PUNCTE_LUCRU
 
 @enduml
