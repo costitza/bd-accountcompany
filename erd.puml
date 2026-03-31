@@ -1,6 +1,4 @@
-@startuml
-
-
+@startuml erd
 
 
 hide circle
@@ -14,7 +12,6 @@ skinparam padding 8
 
 ' Entity Definitions (Conceptual)
 entity "DEPARTAMENTE" as dep
-entity "FORME_JURIDICE" as form
 entity "SERVICII" as serv
 entity "TIPURI_DECLARATII" as tip_decl
 entity "ANGAJATI" as ang
@@ -36,7 +33,6 @@ cli <|-- pf : "ISA"
 
 ' Relații Conceptuale cu cardinalitate explicită ()
 dep "1(1)" -- "M(1)" ang : "organizează"
-form "1(1)" -- "M(1)" cli : "definește"
 
 ' Ecosistemul Clientului
 cli "1(1)" -- "M(0)" doc : "predă"

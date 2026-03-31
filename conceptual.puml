@@ -1,4 +1,4 @@
-@startuml erd
+@startuml conceptual
 !theme plain
 hide circle
 skinparam linetype ortho
@@ -16,13 +16,6 @@ entity "DEPARTAMENTE" as DEPARTAMENTE {
   * denumire_dept : VARCHAR2(50)
   * cod_dept : VARCHAR2(10) <<UQ>>
     descriere : VARCHAR2(200)
-}
-
-entity "FORME_JURIDICE" as FORME_JURIDICE {
-  * id_forma : NUMBER <<PK>>
-  --
-  * cod_forma : VARCHAR2(10) <<UQ>>
-  * denumire_completa : VARCHAR2(100)
 }
 
 entity "SERVICII" as SERVICII {
@@ -173,7 +166,6 @@ entity "VECTOR_FISCAL" as VECTOR_FISCAL {
 ' Relatiile logice folosind notatia standard PlantUML (Crow's Foot)
 
 DEPARTAMENTE ||--|{ ANGAJATI
-FORME_JURIDICE ||--|{ CLIENTI
 CLIENTI ||--o{ DOCUMENTE_LEGALE
 CLIENTI ||--o{ CONTRACTE
 ANGAJATI ||--o{ CONTRACTE
