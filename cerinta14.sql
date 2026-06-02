@@ -19,3 +19,10 @@ WITH CHECK OPTION CONSTRAINT chk_viz_contracte_active;
 UPDATE VIZ_CONTRACTE_ACTIVE 
 SET valoare_totala = valoare_totala + 1000 
 WHERE id_contract = 1; 
+
+
+
+UPDATE VIZ_CONTRACTE_ACTIVE
+SET status_contract = 'Suspendat'
+WHERE id_contract = 1;
+
