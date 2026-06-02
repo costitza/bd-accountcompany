@@ -227,3 +227,42 @@ INSERT INTO DECLARATII_FISCALE (id_declaratie, id_client, id_tip_declaratie, id_
     numar_recipisa_anaf, stare_recipisa) VALUES (SEQ_DECLARATII_FISCALE.NEXTVAL, 4, 3, 7, '2024-04', DATE '2024-05-25', 0, 'Online', 'ANAF008_300_0424', 
         'In curs de verificare');
     
+
+
+
+INSERT INTO CLIENTI (id_client, nume_companie, adresa_sediu, reprezentant_legal, telefon, email_contact) 
+VALUES (SEQ_CLIENTI.NEXTVAL, 'Compania Diviziune SRL', 'Bld. Central Nr. 10', 'Popa Andrei', '0722000000', 'diviziune@compania.ro');
+
+
+INSERT INTO PERSOANE_JURIDICE (id_client, cui, reg_comert, capital_social) 
+VALUES (SEQ_CLIENTI.CURRVAL, 'RO88888888', 'J40/888/2026', 50000);
+
+
+INSERT INTO CONTRACTE (id_contract, id_client, id_angajat, data_semnare, data_expirare, valoare_totala, moneda, status_contract) 
+VALUES (SEQ_CONTRACTE.NEXTVAL, SEQ_CLIENTI.CURRVAL, 1, TO_DATE('01/01/2024', 'DD/MM/YYYY'), TO_DATE('31/12/2024', 'DD/MM/YYYY'), 2000, 'RON', 'Activ');
+
+INSERT INTO CONTRACTE (id_contract, id_client, id_angajat, data_semnare, data_expirare, valoare_totala, moneda, status_contract) 
+VALUES (SEQ_CONTRACTE.NEXTVAL, SEQ_CLIENTI.CURRVAL, 2, TO_DATE('05/02/2024', 'DD/MM/YYYY'), TO_DATE('05/02/2025', 'DD/MM/YYYY'), 3500, 'RON', 'Activ');
+
+INSERT INTO CONTRACTE (id_contract, id_client, id_angajat, data_semnare, data_expirare, valoare_totala, moneda, status_contract) 
+VALUES (SEQ_CONTRACTE.NEXTVAL, SEQ_CLIENTI.CURRVAL, 3, TO_DATE('10/03/2024', 'DD/MM/YYYY'), TO_DATE('10/03/2025', 'DD/MM/YYYY'), 4200, 'RON', 'Activ');
+
+INSERT INTO CONTRACTE (id_contract, id_client, id_angajat, data_semnare, data_expirare, valoare_totala, moneda, status_contract) 
+VALUES (SEQ_CONTRACTE.NEXTVAL, SEQ_CLIENTI.CURRVAL, 4, TO_DATE('15/04/2024', 'DD/MM/YYYY'), TO_DATE('15/04/2025', 'DD/MM/YYYY'), 1500, 'RON', 'Activ');
+
+COMMIT;
+
+
+INSERT INTO CONTRACTE (id_contract, id_client, id_angajat, data_semnare, data_expirare, valoare_totala, moneda, status_contract)
+SELECT 
+    SEQ_CONTRACTE.NEXTVAL, 
+    (SELECT MAX(id_client) FROM CLIENTI WHERE nume_companie = 'Compania Diviziune SRL'),
+    id_angajat,
+    SYSDATE, 
+    ADD_MONTHS(SYSDATE, 12), 
+    1000, 
+    'RON', 
+    'Activ'
+FROM ANGAJATI;
+
+COMMIT;
