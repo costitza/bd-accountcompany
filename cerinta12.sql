@@ -101,3 +101,6 @@ WHERE EXISTS (
     WHERE c.id_angajat = a.id_angajat
 )
 ORDER BY a.salariu DESC;
+
+
+ROLLBACK;
